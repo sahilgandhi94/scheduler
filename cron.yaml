@@ -1,0 +1,7 @@
+cron:
+
+# Example:
+# - description: <desc>
+#   url: <relative url> eg: /v2/cron/generate_sorting_order
+#   schedule: every day 03:00
+#   timezone: Asia/Kolkata
