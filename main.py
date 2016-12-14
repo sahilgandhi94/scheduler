@@ -28,18 +28,10 @@ class MainHandler(webapp2.RequestHandler):
         self.response.write('Hello world!')
 
 
-class TestApiConnectivityHandler(webapp2.RedirectHandler):
-    def get(self):
-        url = "http://api2.workindia.in/api/health/"
-        http = httplib2.Http(timeout=30)
-        headers = {'Content-type': 'application/json'}
-        resp, content = http.request(url, 'GET', headers=headers)
-        self.response.write("Test API URL called " + content)
-
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
-    ('/test', TestApiConnectivityHandler),
     ('/schedule', ScheduleHandler),
     ('/worker', ScheduleWorker),
+    ('/cron/crawler_heartbeat', CrawlerHeartbeat),
     # Add cron worker class URLs here. Example: ('/v2/cron/generate_sorting_order', GenerateSortingOrder),
 ], debug=True)

@@ -1,11 +1,12 @@
 import httplib2
 import urllib
 import webapp2
+import json
 
 from datetime import datetime
 
 
-def _send_request(url, data=None):
+def _send_post(url, data=None):
     http = httplib2.Http(timeout=30)
     if data is None:
         body = urllib.urlencode('')
@@ -15,9 +16,24 @@ def _send_request(url, data=None):
     resp, content = http.request(url, 'POST', headers=headers, body=body)
     return resp, content
 
+def _send_get(url):
+    http = httplib2.Http(timeout=30)
+    resp, content = http.request(url, 'GET')
+    return resp, content
+
 
 # Example:
 # class GenerateSortingOrder(webapp2.RequestHandler):
 #     def get(self):
 #         url = "http://api2.workindia.in/api/jobs/generate-sort-order/"
 #         _send_request(url=url)
+
+
+class CrawlerHeartbeat(webapp2.RequestHandler):
+    def get(self):
+        url = "http://ec2-52-87-165-75.compute-1.amazonaws.com:6800/listjobs.json?project=crawler"
+        schedule_url = "http://ec2-52-87-165-75.compute-1.amazonaws.com:6800/schedule.json"
+        schedule_data = {'project': 'crawler', 'spider': 'zauba'}
+        resp, content = _send_get(url=url)
+        if resp['status'] == "200" and len(json.loads(content)['running']) == 0:
+            resp, content = _send_post(schedule_url, schedule_data)
