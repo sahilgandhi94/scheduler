@@ -1,13 +1,5 @@
-"""
-Example:
-- description: <desc>
-  url: <relative url> eg: /cron/generate_sorting_order
-  schedule: every day 03:00
-  timezone: Asia/Kolkata
-"""
-
 cron:
-- description: <desc>
-  url: /cron/crawler_heartbeat
-  schedule: every 2 hours
-  timezone: Asia/Kolkata
+#- description: Crawler heartbeat to restart the crawler in the event it is not running
+#  url: /cron/crawler_heartbeat
+#  schedule: every 10 minutes
+#  timezone: Asia/Kolkata

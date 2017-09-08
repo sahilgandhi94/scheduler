@@ -25,15 +25,16 @@ def _send_get(url):
 # Example:
 # class GenerateSortingOrder(webapp2.RequestHandler):
 #     def get(self):
-#         url = "http://api2.workindia.in/api/jobs/generate-sort-order/"
+#         url = "<API-URL>"
 #         _send_request(url=url)
 
 
 class CrawlerHeartbeat(webapp2.RequestHandler):
     def get(self):
-        url = "http://ec2-52-87-165-75.compute-1.amazonaws.com:6800/listjobs.json?project=crawler"
-        schedule_url = "http://ec2-52-87-165-75.compute-1.amazonaws.com:6800/schedule.json"
-        schedule_data = {'project': 'crawler', 'spider': 'zauba'}
+        url = "<API-URL>"
+        schedule_url = "<SCHEDULE-URL>"
+        schedule_data = {}
         resp, content = _send_get(url=url)
         if resp['status'] == "200" and len(json.loads(content)['running']) == 0:
             resp, content = _send_post(schedule_url, schedule_data)
+        self.response.write(content)
